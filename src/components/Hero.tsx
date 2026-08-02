@@ -81,7 +81,7 @@ export default function Hero() {
         <HUDCorners />
         <DossierStats />
 
-        <div className="relative z-20 mx-auto flex h-full max-w-[1600px] items-start px-6" style={{ paddingTop: 'clamp(58px, 15vh, 96px)', paddingBottom: 'clamp(8px, 2vh, 16px)' }}>
+        <div className="relative z-20 mx-auto flex h-full max-w-[1600px] items-start px-6" style={{ paddingTop: 'clamp(130px, 15vh, 160px)', paddingBottom: 'clamp(8px, 2vh, 16px)' }}>
           <div className="w-full max-w-[720px]">
 
             <h1
@@ -112,7 +112,7 @@ export default function Hero() {
                 transform: 'translateY(calc((1 - clamp(0, calc((var(--hp, 0) - 0.88) / 0.07), 1)) * 100px))',
               }}
             >
-              Certified GenAI and esports professional with 13 years across technology, gaming and marketing—transforming ambitious ideas into scalable global IPs.
+              Certified GenAI and esports professional with 13 years across technology, gaming and marketing—transforming ambitious ideas into scalable global IPs. Awarded with GOLDEN VISA by UAE.
             </p>
 
             <div
