@@ -1,0 +1,349 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #07090b;
+    color: #f1f0ec;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Prevent horizontal overflow on small screens */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Lock scroll when the mobile menu is open */
+  body.menu-open {
+    overflow: hidden;
+  }
+
+  :focus-visible {
+    outline: 2px solid #ff2430;
+    outline-offset: 3px;
+  }
+}
+
+@layer utilities {
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes status-pulse {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(255, 36, 48, 0.35);
+    }
+    50% {
+      opacity: 0.7;
+      box-shadow: 0 0 0 7px rgba(255, 36, 48, 0);
+    }
+  }
+
+  @keyframes status-pulse-green {
+    0%,
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(57, 255, 20, 0.35);
+    }
+    50% {
+      opacity: 0.75;
+      box-shadow: 0 0 0 6px rgba(57, 255, 20, 0);
+    }
+  }
+
+  .animate-fade-up {
+    opacity: 0;
+    animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0s forwards;
+  }
+  .animate-fade-up-delay-1 {
+    opacity: 0;
+    animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  }
+  .animate-fade-up-delay-2 {
+    opacity: 0;
+    animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  }
+  .animate-fade-up-delay-3 {
+    opacity: 0;
+    animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  }
+  .animate-fade-up-delay-4 {
+    opacity: 0;
+    animation: fade-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+  }
+
+  .animate-fade-in {
+    opacity: 0;
+    animation: fade-in 1.2s ease forwards;
+  }
+  .animate-fade-in-delay {
+    opacity: 0;
+    animation: fade-in 1.2s ease 0.5s forwards;
+  }
+
+  .animate-scale-in {
+    opacity: 0;
+    animation: scale-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  }
+
+  .animate-status-pulse {
+    animation: status-pulse 2.4s ease-in-out infinite;
+  }
+  .animate-status-pulse-green {
+    animation: status-pulse-green 2.6s ease-in-out infinite;
+  }
+
+  /* Outlined text treatment for the accent line */
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(241, 240, 236, 0.92);
+  }
+
+  /* Scanline texture */
+  .scanlines {
+    background-image: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  /* Vignette */
+  .vignette {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 55%,
+      rgba(7, 9, 11, 0.55) 100%
+    );
+  }
+
+  /* Hide elements from screen readers & layout when needed */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  @keyframes scroll-hint {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(200%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-fade-up-delay-1,
+  .animate-fade-up-delay-2,
+  .animate-fade-up-delay-3,
+  .animate-fade-up-delay-4,
+  .animate-fade-in,
+  .animate-fade-in-delay,
+  .animate-scale-in,
+  .animate-status-pulse,
+  .animate-status-pulse-green {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .parallax-layer {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .contact-status-dot,
+  .intel-status-dot {
+    animation: none !important;
+  }
+}
+
+/*
+ * Responsive breakpoints ported from Abhijit Hero.dc.html's own <style> block.
+ * These override the cinematic sections' inline vh-heights and layouts, so
+ * !important is required to win over the React inline `style` props.
+ */
+@media (max-width: 1024px) {
+  .career-section {
+    height: 560vh !important;
+  }
+  .intel-section {
+    height: 400vh !important;
+  }
+  .intel-dossier {
+    width: 50vw !important;
+  }
+  .contact-section {
+    height: 280vh !important;
+  }
+  .contact-stage {
+    grid-template-columns: minmax(0, 52fr) minmax(340px, 48fr) !important;
+  }
+  .brand-section {
+    height: 170vh !important;
+  }
+  .brand-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    grid-auto-rows: clamp(44px, 4.2vw, 58px) !important;
+    gap: 12px !important;
+  }
+  .brand-cell {
+    height: clamp(44px, 4.2vw, 58px) !important;
+    padding: 6px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .hud-corners,
+  .dossier-stats,
+  .operative-status {
+    display: none !important;
+  }
+  #hero {
+    height: 320vh !important;
+  }
+  .brand-section {
+    position: static !important;
+    height: auto !important;
+    padding: 48px 0;
+  }
+  .brand-stage {
+    position: static !important;
+    height: auto !important;
+  }
+  .brand-layout {
+    flex-direction: column !important;
+    padding: 0 20px !important;
+  }
+  .brand-heading-col {
+    width: 100% !important;
+  }
+  .brand-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    margin-top: 24px;
+  }
+  .brand-cell,
+  .brand-cell > div {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .mission-section {
+    height: 600vh !important;
+  }
+  .career-section {
+    height: 500vh !important;
+  }
+  .intel-section {
+    height: 360vh !important;
+  }
+  .intel-stage {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .intel-stage video {
+    position: relative !important;
+    height: 38svh !important;
+    flex-shrink: 0;
+  }
+  .intel-gradient {
+    display: none !important;
+  }
+  .intel-dossier {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    flex: 1;
+    overflow-y: auto !important;
+    border-left: none !important;
+    border-right: none !important;
+    padding: 20px !important;
+    /* margin (not padding) actually shrinks this flex:1 item's rendered
+       box, leaving real screen space below it for the fixed "Clearance
+       Verified" status bar — padding only adds scrollable space inside
+       a box whose edges still collided with the status bar. */
+    margin-bottom: 76px !important;
+    background: #07090b !important;
+  }
+  .contact-section {
+    height: 240vh !important;
+  }
+  .contact-stage {
+    grid-template-columns: none !important;
+    grid-template-rows: 44svh 1fr !important;
+  }
+  .contact-content-panel {
+    /* The desktop padding-top clears the fixed header for the side-by-side
+       layout; on mobile the panel sits below the video row already, so a
+       large reserve just pushes the CTAs off-screen for no reason. */
+    padding-top: clamp(16px, 4vh, 32px) !important;
+  }
+  .contact-divider-v {
+    display: none !important;
+  }
+  .contact-divider-h {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.12) !important;
+  }
+  .contact-buttons {
+    flex-direction: column !important;
+  }
+  .contact-buttons a {
+    width: 100%;
+  }
+}
+
+@media (max-height: 760px) {
+  .dossier-stats {
+    display: none !important;
+  }
+}
