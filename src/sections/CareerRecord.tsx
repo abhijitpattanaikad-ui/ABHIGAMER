@@ -69,7 +69,7 @@ export default function CareerRecord() {
           src="/assets/career-scroll-optimized.mp4"
           muted
           playsInline
-          preload="auto"
+          preload="none"
           className="absolute inset-0 h-full w-full object-cover"
         />
 

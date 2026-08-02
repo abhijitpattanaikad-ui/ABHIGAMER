@@ -58,7 +58,7 @@ export default function StrategicIntel() {
           src="/assets/strategic-intel-scroll-optimized.mp4"
           muted
           playsInline
-          preload="auto"
+          preload="none"
           className="absolute inset-0 h-full w-full object-cover"
           style={{ objectPosition: 'center', background: '#000' }}
         />

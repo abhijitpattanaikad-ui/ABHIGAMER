@@ -207,8 +207,37 @@ export class CinematicEngine {
     this.attachVideoLifecycle(this.intelVideoRef.current, INTEL_FRAME, 'intelPendingTarget', true);
     this.attachVideoLifecycle(this.contactVideoRef.current, CONTACT_FRAME, 'contactPendingTarget', true);
 
+    // Only the hero video (preload="auto" in markup) loads immediately.
+    // The other four (~17MB combined) start as preload="none" and only
+    // begin fetching once their section is within reach, so a first mobile
+    // visit isn't stuck downloading video it may never scroll to.
+    this.setupLazyPreload(this.missionContainerRef.current, this.missionVideoRef.current);
+    this.setupLazyPreload(this.careerContainerRef.current, this.careerVideoRef.current);
+    this.setupLazyPreload(this.intelContainerRef.current, this.intelVideoRef.current);
+    this.setupLazyPreload(this.contactContainerRef.current, this.contactVideoRef.current);
+
     this.measureLayout();
     this.scheduleFrame();
+  }
+
+  private lazyPreloadObservers: IntersectionObserver[] = [];
+
+  private setupLazyPreload(container: HTMLElement | null, video: HTMLVideoElement | null) {
+    if (!container || !video || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        video.preload = 'auto';
+        video.load();
+        observer.disconnect();
+      },
+      // Positive rootMargin expands the trigger zone so loading starts
+      // while the user is still scrolling through the preceding section,
+      // not the instant this one becomes visible.
+      { rootMargin: '600px 0px 600px 0px', threshold: 0 }
+    );
+    observer.observe(container);
+    this.lazyPreloadObservers.push(observer);
   }
 
   unmount() {
@@ -221,6 +250,8 @@ export class CinematicEngine {
     this.intelObserver?.disconnect();
     this.brandObserver?.disconnect();
     this.trackResizeObserver?.disconnect();
+    this.lazyPreloadObservers.forEach((o) => o.disconnect());
+    this.lazyPreloadObservers = [];
     clearTimeout(this.scrollIdleTimer);
     if (this.rafId != null) cancelAnimationFrame(this.rafId);
     this.rafScheduled = false;
@@ -500,11 +531,16 @@ export class CinematicEngine {
     return doc;
   }
 
-  private smoothScrollBy(delta: number) {
+  /**
+   * Fixed-duration eased scroll, independent of distance. Native
+   * `scrollTo({behavior:'smooth'})` scales its duration with distance in
+   * most browsers, which made nav-link jumps across this ~25,000px page
+   * take 6-7s. Every programmatic jump on this site goes through here so
+   * it always completes in `duration` regardless of how far it travels.
+   */
+  private smoothScrollTo(target: number, duration = 750) {
     const root = this.getScrollRoot();
     const startTop = root.scrollTop;
-    const target = startTop + delta;
-    const duration = 500;
     const startTime = performance.now();
     const ease = (t: number) => 1 - Math.pow(1 - t, 3);
     const step = (now: number) => {
@@ -513,6 +549,11 @@ export class CinematicEngine {
       if (t < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
+  }
+
+  private smoothScrollBy(delta: number, duration = 500) {
+    const root = this.getScrollRoot();
+    this.smoothScrollTo(root.scrollTop + delta, duration);
   }
 
   goToPrevMission = () => {
@@ -539,7 +580,7 @@ export class CinematicEngine {
     if (!el) return;
     const scrollableDistance = el.offsetHeight - window.innerHeight;
     const target = el.offsetTop + progress * scrollableDistance;
-    this.getScrollRoot().scrollTo({ top: target, behavior: 'smooth' });
+    this.smoothScrollTo(target);
   }
 
   goToProfile = (e?: { preventDefault: () => void }) => {
@@ -572,7 +613,7 @@ export class CinematicEngine {
       return;
     }
     const target = el.offsetTop + el.offsetHeight - window.innerHeight - 2;
-    this.getScrollRoot().scrollTo({ top: target, behavior: 'smooth' });
+    this.smoothScrollTo(target);
   };
 
   closeMenuAndGoToContact = (e?: { preventDefault: () => void }) => {

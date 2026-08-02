@@ -19,7 +19,7 @@ export default function MissionDebrief() {
           src="/assets/mission-scroll-optimized.mp4"
           muted
           playsInline
-          preload="auto"
+          preload="none"
           className="absolute inset-0 h-full w-full object-cover"
           style={{ opacity: 'clamp(0.3, calc(0.3 + var(--mp, 0) / 0.02 * 0.7), 1)' }}
         />
