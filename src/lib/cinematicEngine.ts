@@ -374,8 +374,13 @@ export class CinematicEngine {
     if (this.heroVisible && this.heroContainerRef.current) {
       const container = this.heroContainerRef.current;
       const rect = container.getBoundingClientRect();
-      const scrollableDistance = container.offsetHeight - window.innerHeight;
-      const p = Math.min(1, Math.max(0, -rect.top / (scrollableDistance || 1)));
+      // The hero section is taller than the reveal itself needs, so that once
+      // fully revealed the page holds on this frame for a couple more
+      // screen-heights before moving into Brand Credentials. Progress is
+      // measured against that fixed reveal distance, not the section's full
+      // (padded) height, so the reveal's own pacing never changes.
+      const heroRevealDistance = window.innerHeight * (window.innerWidth <= 767 ? 2.2 : 3);
+      const p = Math.min(1, Math.max(0, -rect.top / (heroRevealDistance || 1)));
       this.heroRaw = p;
       container.style.setProperty('--hp', String(p));
       const video = this.heroVideoRef.current;

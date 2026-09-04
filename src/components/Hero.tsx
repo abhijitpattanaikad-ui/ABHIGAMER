@@ -64,7 +64,7 @@ export default function Hero() {
   const { engine } = useCinematic();
 
   return (
-    <section id="hero" ref={engine.heroContainerRef} aria-label="Hero" className="relative w-full" style={{ height: '400vh' }}>
+    <section id="hero" ref={engine.heroContainerRef} aria-label="Hero" className="relative w-full" style={{ height: '500vh' }}>
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden bg-[#07090B]">
         <video
           ref={engine.heroVideoRef}
