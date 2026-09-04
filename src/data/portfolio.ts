@@ -17,7 +17,7 @@ export type Stat = { value: string; label: string };
 export const HERO_STATS: Stat[] = [
   { value: '13+', label: 'Years in Industry' },
   { value: '1.5M', label: 'Gamers Connected' },
-  { value: '$5M+', label: 'Revenue Generated' },
+  { value: '50+', label: 'IP Created' },
 ];
 
 export type Mission = {
